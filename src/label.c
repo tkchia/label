@@ -490,15 +490,19 @@ int check_label(char *s)
 {
     int length,LabelLen;
     int i,j;
+
+#ifdef __TURBOC__
     char * sup;
 
-    /* s = strupr(s); */
     sup = s;
     while (*sup != '\0')
         {
         *sup = toupper(*sup);
         sup++;
         } /* end while */
+#else
+    s = strupr(s);
+#endif
 
     /* Make sure label is not too long. */
     length = strlen(s);
@@ -719,9 +723,9 @@ int main(int argc, char *argv[])
 	    myprintf("\nDelete current volume label (Y/N)? ",0);
             mygets(ans,2); /* WHY not use getch? ??? */
             } /* end do. */
-        while (((*ans=(char)toupper(*ans)) != 'Y') && (*ans != 'N'));
+        while (*ans != 'Y' && *ans != 'y' && *ans != 'N' && *ans != 'n');
     
-        if (toupper(*ans) == 'N')
+        if (*ans == 'N' || *ans == 'n')
             exit(1);
 
         } /* end if. */
